@@ -12,20 +12,19 @@ public class Main6 {
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/world", "root", "root");
 			stmt = conn.createStatement();
-			
-			String query = "SELECT name, continent, surfaceArea, population FROM country"
-					+ " WHERE name = '" + name + "'";
+
+			String query = "SELECT name, continent, surfaceArea, population FROM country" + " WHERE name = '" + name
+					+ "'";
 
 			rs = stmt.executeQuery(query);
-			
+
 			while (rs.next()) {
 				String nname = rs.getString("name");
-				String continent = (String)rs.getObject("continent");
-			
+				String continent = (String) rs.getObject("continent");
+
 				double surfaceArea = rs.getFloat("surfacearea");
 				int population = rs.getInt("population");
-						
-				
+
 				System.out.printf("%s %s %f %d\n", nname, continent, surfaceArea, population);
 			}
 
@@ -59,7 +58,7 @@ public class Main6 {
 			}
 		}
 	}
-	
+
 	public static void main(String[] args) {
 
 		try {
@@ -68,7 +67,7 @@ public class Main6 {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		getByName("south korea");
 		getByName("north korea");
 	}

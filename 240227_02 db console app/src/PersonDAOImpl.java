@@ -8,10 +8,44 @@ import java.util.List;
 import dbutil.MySqlConnectionProvider;
 
 public class PersonDAOImpl implements PersonDAO {
+	//Singleton Pattern
+	private static PersonDAOImpl instance = new PersonDAOImpl();
+	
+	public static PersonDAOImpl getInstance() {
+		return instance;
+	}
+	
+	private PersonDAOImpl() {}
 
 	@Override
-	public int insert(Person p) {
-		Connection conn = null;
+	public Person getByPk(String name, Connection conn) {
+		Statement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = MySqlConnectionProvider.getConnection();
+
+			String query = "SELECT * FROM PERSON WHERE NAME = '" + name + "'";
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+			if (rs.next()) {
+
+				return resultMapping(rs);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new RuntimeException("데이터 베이스 작업 중 문제가 발생함. 관리자 문의요망.");
+		} finally {
+			MySqlConnectionProvider.closeResultSet(rs);
+			MySqlConnectionProvider.closeStatement(stmt);
+		}
+
+		return null;
+	}
+
+	@Override
+	public int insert(Person p, Connection conn) {
 		Statement stmt = null;
 		try {
 			conn = MySqlConnectionProvider.getConnection();
@@ -25,7 +59,6 @@ public class PersonDAOImpl implements PersonDAO {
 			e.printStackTrace();
 		} finally {
 			MySqlConnectionProvider.closeStatement(stmt);
-			MySqlConnectionProvider.closeConnection(conn);
 		}
 
 		return 0;
@@ -47,14 +80,13 @@ public class PersonDAOImpl implements PersonDAO {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(query);
 			while (rs.next()) {
-				String name = rs.getString("name");
-				int age = rs.getInt("age");
 
-				list.add(new Person(name, age));
+				list.add(resultMapping(rs));
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new RuntimeException("데이터 베이스 작업 중 문제가 발생함. 관리자 문의요망.");
 		} finally {
 
 			MySqlConnectionProvider.closeResultSet(rs);

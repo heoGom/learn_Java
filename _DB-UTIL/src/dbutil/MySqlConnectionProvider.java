@@ -12,7 +12,7 @@ import java.util.Properties;
 
 public class MySqlConnectionProvider {
 	private static Properties properties = new Properties();
-	
+
 	static {
 		System.out.println("프로퍼티 설정 파일을 읽습니다.");
 		ClassLoader classLoader = MySqlConnectionProvider.class.getClassLoader();
@@ -22,7 +22,7 @@ public class MySqlConnectionProvider {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		System.out.println("MySql JDBC 드라이버를 적재합니다.");
 		try {
 			Class.forName(properties.getProperty("DRIVER"));
@@ -30,13 +30,12 @@ public class MySqlConnectionProvider {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static Connection getConnection() throws SQLException {
-		return DriverManager.getConnection(properties.getProperty("URL")
-				, properties.getProperty("ID")
-				, properties.getProperty("PASSWORD"));
+		return DriverManager.getConnection(properties.getProperty("URL"), properties.getProperty("ID"),
+				properties.getProperty("PASSWORD"));
 	}
-	
+
 	public static void closeConnection(Connection conn) {
 		if (conn != null) {
 			try {
@@ -46,7 +45,7 @@ public class MySqlConnectionProvider {
 			}
 		}
 	}
-	
+
 	public static void closeStatement(Statement stmt) {
 		if (stmt != null) {
 			try {
@@ -56,7 +55,7 @@ public class MySqlConnectionProvider {
 			}
 		}
 	}
-	
+
 	public static void closeResultSet(ResultSet rs) {
 		if (rs != null) {
 			try {
@@ -67,7 +66,3 @@ public class MySqlConnectionProvider {
 		}
 	}
 }
-
-
-
-

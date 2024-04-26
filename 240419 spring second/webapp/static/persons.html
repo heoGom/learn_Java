@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>인적정보 목록</title>
+</head>
+<body>
+	<h3>목록</h3>
+	<div id="container"></div>
+</body>
+<script>
+	const apiUrl = "http://localhost:8080/api/person";
+	const container = document.getElementById("container");
+
+	fetch(apiUrl)
+		.then(resp => resp.json())
+		.then(data => {
+			data.forEach(element => {
+				let p = document.createElement("p");
+				p.innerText = `${element.name} : ${element.age}`;
+
+				container.append(p);
+			});
+		});
+</script>
+</html>

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository //@Repository를 붙이면 스프링이 new를 해서 IoC(컬렉션 List자료형 같은) 에 저장한다
 public class BoardRepository {
 
@@ -15,12 +17,31 @@ public class BoardRepository {
     public BoardRepository() {
         System.out.println("BoardRepository 생성자");
     }
+
+    public Board findById(int id) {
+        Query query = em.createNativeQuery("select * from board_tb where id = ?", Board.class);
+        query.setParameter(1, id);
+        try {
+            Board board = (Board) query.getSingleResult();
+            return board;
+        } catch (Exception e) {
+            // 입셉션을 내가 잡은것 까지 배움 = 처리 방법은 v2에서 배우기
+            throw new RuntimeException("게시글 id를 찾을 수 없습니다.");
+        }
+    }
+
+    public List findAll() {
+        Query query = em.createNativeQuery("select * from board_tb order by id desc", Board.class);
+        List resultList = query.getResultList();
+
+        return resultList;
+    }
+
     @Transactional
     public void save(String title, String content) {
         Query query = em.createNativeQuery("insert into board_tb (title, content, created_at) values (?, ?, now())");
         query.setParameter(1, title);
         query.setParameter(2, content);
         query.executeUpdate();
-
     }
 }

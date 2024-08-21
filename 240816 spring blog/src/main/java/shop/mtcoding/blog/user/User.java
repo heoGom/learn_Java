@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -12,7 +13,6 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Table(name = "user_tb")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,6 +26,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @CreationTimestamp
     private Timestamp createdAt;
 
     @Builder

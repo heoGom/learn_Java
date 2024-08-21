@@ -18,7 +18,7 @@ public class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
-    public void updateById_test(){
+    public void updateById_test() {
         //given
         int id = 1;
         String title = "제목1 변경";
@@ -32,10 +32,10 @@ public class BoardRepositoryTest {
     }
 
     @Test
-    public void  deleteById_test(){
+    public void deleteById_test() {
 
         //given
-        int id =1;
+        int id = 1;
 
         //when
         boardRepository.deleteById(id);
@@ -44,13 +44,14 @@ public class BoardRepositoryTest {
         try {
             boardRepository.findById(id);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Assertions.assertThat(e.getMessage()).isEqualTo("게시글 id를 찾을 수 없습니다.");
         }
 
     }
+
     @Test
-    public void findById_test(){
+    public void findById_test() {
         //given
         int id = 1;
         //when
@@ -66,26 +67,29 @@ public class BoardRepositoryTest {
     }
 
     @Test
-    public void findAll_test(){
+    public void findAll_test() {
         //given
 
         //when
-        List<Board> boardList= boardRepository.findAll();
+        System.out.println("1. 첫번째 조회");
+        List<Board> boardList = boardRepository.findAll();
+
+        System.out.println("userId : " + boardList.get(0).getUser().getId());
+        System.out.println("--------------------------------------------------");
+
         //eye
-        System.out.println("사이즈 : " + boardList.size());
-        for(Board board:boardList){
-            System.out.println(board.getTitle());
-            System.out.println(board.getContent());
+        System.out.println("2. 레이지 로딩");
+        for (int a = 0; a < 5; a++) {
+
+            System.out.println("username : " + boardList.get(a).getUser().getUsername());
         }
 
-
-
     }
-    
+
     //테스트 메서드는 매개변수를 사용할수 없다.
-    //메서드명_test : 컨벤션
+//메서드명_test : 컨벤션
     @Test
-    public void save_test(){
+    public void save_test() {
         //given (매개변수를 강제로 만들기)
         String title = "제목1";
         String content = "내용1";

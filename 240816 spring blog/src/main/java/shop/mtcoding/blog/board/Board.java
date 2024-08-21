@@ -2,6 +2,7 @@ package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
 import lombok.*;
+import shop.mtcoding.blog.user.User;
 
 import java.sql.Timestamp;
 
@@ -20,6 +21,9 @@ public class Board {
     @Column(nullable = false)
     private String content;
     private Timestamp createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     @Builder
     public Board(Integer id, String title, String content, Timestamp createdAt) {

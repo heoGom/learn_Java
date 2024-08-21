@@ -39,19 +39,22 @@ public class BoardRepository {
     }
 
     public Board findById(int id) {
-        Query query = em.createNativeQuery("select * from board_tb where id = ?", Board.class);
-        query.setParameter(1, id);
+
+        // select * from board_tb bt inner join user_tb ut on bt.user_id = ut.id where bt.id = ?
+        Query query = em.createQuery("select b from Board b join fetch b.user where b.id = : id", Board.class);
+        query.setParameter("id", id);
         try {
             Board board = (Board) query.getSingleResult();
             return board;
         } catch (Exception e) {
+            e.printStackTrace();
             // 입셉션을 내가 잡은것 까지 배움 = 처리 방법은 v2에서 배우기
             throw new RuntimeException("게시글 id를 찾을 수 없습니다.");
         }
     }
 
     public List findAll() {
-        Query query = em.createNativeQuery("select * from board_tb order by id desc", Board.class);
+        Query query = em.createQuery("select b from Board b order by id desc", Board.class);
         List resultList = query.getResultList();
 
         return resultList;

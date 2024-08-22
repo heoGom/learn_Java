@@ -2,6 +2,7 @@ package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import shop.mtcoding.blog.user.User;
 
 import java.sql.Timestamp;
@@ -20,16 +21,19 @@ public class Board {
     private String title;
     @Column(nullable = false)
     private String content;
+
+    @CreationTimestamp
     private Timestamp createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Builder
-    public Board(Integer id, String title, String content, Timestamp createdAt) {
+    public Board(Integer id, String title, String content, Timestamp createdAt, User user) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
+        this.user = user;
     }
 }

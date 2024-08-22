@@ -2,22 +2,19 @@ package shop.mtcoding.blog.board;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Repository //@Repository를 붙이면 스프링이 new를 해서 IoC(컬렉션 List자료형 같은) 에 저장한다
 public class BoardRepository {
 
-    @Autowired //IoC에 있는 객체를 찾아온다.
-    private EntityManager em;
+    private final EntityManager em;
 
-    public BoardRepository() {
-        System.out.println("BoardRepository 생성자");
-
-    }
     @Transactional
     public void updateById(String title, String content, int id) {
         Query query = em.createNativeQuery("update board_tb set title=?, content=? where id=?");
@@ -61,10 +58,8 @@ public class BoardRepository {
     }
 
     @Transactional
-    public void save(String title, String content) {
-        Query query = em.createNativeQuery("insert into board_tb (title, content, created_at) values (?, ?, now())");
-        query.setParameter(1, title);
-        query.setParameter(2, content);
-        query.executeUpdate();
+    public void save(Board board) {
+        System.out.println("들어가기전 타이틀좀 보자 :"+board.getTitle());
+       em.persist(board);
     }
 }

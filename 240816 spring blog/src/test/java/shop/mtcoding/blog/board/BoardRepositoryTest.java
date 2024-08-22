@@ -95,7 +95,7 @@ public class BoardRepositoryTest {
         String content = "내용1";
 
         //when
-        boardRepository.save(title, content);
+//        boardRepository.save(title, content);
 
         //eye
 

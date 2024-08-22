@@ -2,14 +2,16 @@ package shop.mtcoding.blog.user;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+@RequiredArgsConstructor
 @Repository
 public class UserRepository {
-    @Autowired
-    EntityManager em;
+
+    private final EntityManager em;
 
     @Transactional
     public void save(User user) {

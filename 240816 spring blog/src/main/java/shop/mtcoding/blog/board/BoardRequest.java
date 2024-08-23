@@ -20,4 +20,8 @@ public class BoardRequest {
 
         }
     }
+    @Data
+    public static class DeleteDTO {
+        private Integer id;
+    }
 }

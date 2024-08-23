@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import shop.mtcoding.blog.core.error.ex.Exception404;
 
 import java.util.List;
 
@@ -44,9 +45,7 @@ public class BoardRepository {
             Board board = (Board) query.getSingleResult();
             return board;
         } catch (Exception e) {
-            e.printStackTrace();
-            // 입셉션을 내가 잡은것 까지 배움 = 처리 방법은 v2에서 배우기
-            throw new RuntimeException("게시글 id를 찾을 수 없습니다.");
+            return null;
         }
     }
 

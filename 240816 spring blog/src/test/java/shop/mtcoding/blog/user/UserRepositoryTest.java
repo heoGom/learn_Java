@@ -11,6 +11,14 @@ public class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
+
+    @Test
+    public void findByUsername_test(){
+        String username = "haha";
+        User user = userRepository.findByUsername(username);
+
+        System.out.println(user);
+    }
     @Test
     public void save_test(){
         String username = "haha";

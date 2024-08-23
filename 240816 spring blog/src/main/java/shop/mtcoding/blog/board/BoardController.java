@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import shop.mtcoding.blog.core.error.ex.Exception401;
 import shop.mtcoding.blog.user.User;
 
 import java.util.List;
@@ -15,16 +16,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
-    private final BoardRepository boardRepository;
     private final HttpSession session;
-
-    @GetMapping("/test/board/1")
-    public void testBoard() {
-        List<Board> boardList = boardRepository.findAll();
-        System.out.println("---------------------------------------------");
-        System.out.println(boardList.get(2).getUser().getPassword());
-        System.out.println("---------------------------------------------");
-    }
 
 
     // url : http://localhost:8080/board/1/update
@@ -32,14 +24,19 @@ public class BoardController {
     // content-type : x-www-form-urlencoded
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable("id") int id, @RequestParam("title") String title, @RequestParam("content") String content) {
-        boardRepository.updateById(title, content, id);
+//        boardRepository.updateById(title, content, id);
         return "redirect:/board/" + id;
     }
 
 
     @PostMapping("/board/{id}/delete")
-    public String delete(@PathVariable("id") int id) {
-        boardRepository.deleteById(id);
+    public String delete(BoardRequest.DeleteDTO deleteDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        if (sessionUser == null) {
+            throw new Exception401("로그인이 필요합니다");
+        }
+        boardService.게시글삭제(deleteDTO, sessionUser);
         return "redirect:/board";
     }
 
@@ -51,10 +48,10 @@ public class BoardController {
 
         // 인증 체크 필요함
         if (sessionUser == null) {
-            throw new RuntimeException("로그인이 필요합니다");
+            throw new Exception401("로그인이 필요합니다");
         }
-
-        boardRepository.save(saveDTO.toEntity(sessionUser));
+        boardService.게시글쓰기(saveDTO, sessionUser);
+//        boardRepository.save(saveDTO.toEntity(sessionUser));
         return "redirect:/board";
     }
 
@@ -62,7 +59,7 @@ public class BoardController {
     // get, post
     @GetMapping("/board")
     public String list(HttpServletRequest request) {
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = boardService.게시글목록보기();
         request.setAttribute("models", boardList);
 
         return "board/list";
@@ -99,8 +96,8 @@ public class BoardController {
     // 3. 응답 : board/update-form
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable("id") int id, HttpServletRequest request) {
-        Board board = boardRepository.findById(id);
-        request.setAttribute("model", board);
+//        Board board = boardRepository.findById(id);
+//        request.setAttribute("model", board);
         return "board/update-form";
     }
 }

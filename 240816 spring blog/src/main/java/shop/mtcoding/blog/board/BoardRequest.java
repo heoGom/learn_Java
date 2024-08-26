@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import shop.mtcoding.blog.user.User;
 
@@ -7,8 +8,19 @@ public class BoardRequest {
 
 
     @Data
-    public static class SaveDTO {
+    public static class UpdateDTO {
+        @NotEmpty
         private String title;
+        @NotEmpty
+        private String content;
+
+    }
+
+    @Data
+    public static class SaveDTO {
+        @NotEmpty
+        private String title;
+        @NotEmpty
         private String content;
 
         public Board toEntity(User sessionUser) {
@@ -17,11 +29,12 @@ public class BoardRequest {
                     .content(content)
                     .user(sessionUser)
                     .build();
-
         }
     }
+
     @Data
     public static class DeleteDTO {
+        @NotEmpty
         private Integer id;
     }
 }

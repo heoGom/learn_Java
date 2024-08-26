@@ -17,6 +17,21 @@ public class BoardRepositoryTest {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Autowired
+    EntityManager em;
+
+    @Test
+    public void updateByIdV2_test(){
+        //given
+        int id = 1;
+        Board board = boardRepository.findById(id);
+        board.setTitle("제목10");
+        board.setContent("내용10");
+        em.flush();
+
+
+    }
+
     @Test
     public void updateById_test() {
         //given

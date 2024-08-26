@@ -18,9 +18,10 @@ public class BoardResponse {
             this.title = board.getTitle();
             this.content = board.getContent();
             this.isOwner = false;
-
-            if (board.getUser().getId() == sessionUser.getId()) {
-                isOwner = true;
+            if (sessionUser != null) {
+                if (board.getUser().getId() == sessionUser.getId()) {
+                    isOwner = true;
+                }
             }
             this.user = new UserDTO(board.getUser());
         }

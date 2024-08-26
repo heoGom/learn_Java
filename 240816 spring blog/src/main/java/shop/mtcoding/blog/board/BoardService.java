@@ -16,7 +16,39 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public List<Board> 게시글목록보기(){
+    @Transactional
+    public void 게시글수정(int id, BoardRequest.UpdateDTO updateDTO, User sessionUser){
+        Board board = boardRepository.findById(id);
+        if (board.getUser().getId() != sessionUser.getId()) {
+            throw new Exception403("게시글을 수정할 권한이 없습니다.");
+        }
+        if (board == null) {
+            throw new Exception404("없는 게시글이다 이놈아");
+        }
+
+        board.setTitle(updateDTO.getTitle());
+        board.setContent(updateDTO.getContent());
+        // flush() 자동 호출됨(더티체킹)
+
+
+
+    }
+
+    public Board 게시글수정화면가기(int id, User sessionUser) {
+        Board board = boardRepository.findById(id);
+
+        if (board.getUser().getId() != sessionUser.getId()) {
+            throw new Exception403("게시글을 수정할 권한이 없습니다.");
+        }
+        if (board == null) {
+            throw new Exception404("없는 게시글이다 이놈아");
+        }
+
+        return board;
+
+    }
+
+    public List<Board> 게시글목록보기() {
         List<Board> boardList = boardRepository.findAll();
         return boardList;
     }
@@ -27,11 +59,11 @@ public class BoardService {
 
         // 2. 게시글 존재 여부 확인(404)
         Board board = boardRepository.findById(deleteDTO.getId());
-       if (board == null) {
-           throw new Exception404("없는 게시글이다 이놈아");
-       }
+        if (board == null) {
+            throw new Exception404("없는 게시글이다 이놈아");
+        }
         // 3. 내가 쓴글인지 확인하기(403)
-        if(!board.getUser().equals(sessionUser)) {
+        if (!board.getUser().equals(sessionUser)) {
             throw new Exception403("니놈은 지울수 없는놈이네");
         }
 

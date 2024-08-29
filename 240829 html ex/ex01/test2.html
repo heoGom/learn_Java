@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="myBtn">Click me</button>
+    <input type="text" id="input">
+    <script>
+        const myBtn = document.getElementById("myBtn");
+        const myinput = document.getElementById("input");
+
+        myBtn.addEventListener("click", function () {
+            alert("Hello World!");
+            myinput.value = "hello";
+        });
+
+        myBtn.addEventListener("mouseover", () => {
+            myinput.style.backgroundColor = "lightyellow";
+        })
+
+        myBtn.addEventListener("mouseout", () => {
+            myinput.style.backgroundColor = "white";
+
+        })
+
+        myinput.addEventListener("change", () => {
+            console.log("체인지 : " + myinput.value)
+        })
+        myinput.addEventListener("input", () => {
+            console.log("인풋 : " + myinput.value)
+        })
+
+
+    </script>
+</body>
+
+</html>

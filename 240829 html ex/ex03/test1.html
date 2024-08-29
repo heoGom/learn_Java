@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="root">
+
+    </div>
+    <script>
+        function makeDom() {
+            return `<div>그림</div>`;
+        }
+
+        async function download() {
+            let response = await fetch("http://192.168.0.99:8080/test");
+            let data = await response.json();
+            $("#root").append(`<div>${data.body}</div>`);
+        }
+        function download2() {
+            fetch("localhost:8080/test")
+                .then(res => res.json())
+                .then(res => {
+                    $("#root").append(`<div>${data.body}</div>`);
+                })
+
+        }
+
+        $("#root").append(makeDom());
+        $("#root").append(makeDom());
+        download();
+        $("#root").append(makeDom());
+    </script>
+</body>
+
+</html>

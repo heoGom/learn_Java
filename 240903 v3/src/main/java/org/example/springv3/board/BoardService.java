@@ -1,7 +1,6 @@
 package org.example.springv3.board;
 
 import lombok.RequiredArgsConstructor;
-import org.example.springv3.core.error.ex.Exception400;
 import org.example.springv3.core.error.ex.Exception403;
 import org.example.springv3.user.User;
 import org.springframework.data.domain.Sort;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.example.springv3.core.error.ex.Exception404;
 
@@ -84,10 +82,21 @@ public class BoardService {
     }
 
     
+//    public BoardResponse.DetailDTO 게시글상세보기(User sessionUser, Integer boardId){
+//        Board boardPS = boardRepository.mFindByIdWithReply(boardId)
+//                .orElseThrow(() -> new Exception404("게시글이 없습니다."));
+//
+//        return new BoardResponse.DetailDTO(boardPS,sessionUser);
+//    }
     public BoardResponse.DetailDTO 게시글상세보기(User sessionUser, Integer boardId){
-        Board boardPS = boardRepository.mFindById(boardId)
+        Board boardPS = boardRepository.mFindByIdWithReply(boardId)
                 .orElseThrow(() -> new Exception404("게시글이 없습니다."));
 
-        return new BoardResponse.DetailDTO(boardPS,sessionUser);
+        return new BoardResponse.DetailDTO(boardPS, sessionUser);
+    }
+    public Board 게시글상세보기V3(User sessionUser, Integer boardId){
+        Board boardPS = boardRepository.mFindByIdWithReply(boardId)
+                .orElseThrow(() -> new Exception404("게시글이 없습니다."));
+        return boardPS;
     }
 }

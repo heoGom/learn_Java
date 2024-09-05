@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -71,12 +73,28 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public String detail(@PathVariable("id") Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
+        BoardResponse.DetailDTO detailDTO = boardService.게시글상세보기(sessionUser, id);
 
-        BoardResponse.DetailDTO model = boardService.게시글상세보기(sessionUser, id);
-        request.setAttribute("model", model);
+        request.setAttribute("model", detailDTO);
 
         return "board/detail";
 
+    }
+    @GetMapping("/v2/board/{id}")
+    public @ResponseBody BoardResponse.DetailDTO detailV2(@PathVariable("id") Integer id) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        BoardResponse.DetailDTO model = boardService.게시글상세보기(sessionUser, id);
+
+        return model;
+    }
+    @GetMapping("/v3/board/{id}")
+    public @ResponseBody Board detailV3(@PathVariable("id") Integer id) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        Board model = boardService.게시글상세보기V3(sessionUser, id);
+
+        return model;
     }
 
 }

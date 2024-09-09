@@ -6,12 +6,18 @@ import org.example.springv3.core.util.Resp;
 import org.example.springv3.user.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
 public class ReplyController {
+
+    @PostMapping("/api/reply")
+    public ResponseEntity<?> save(@RequestBody ReplyRequest.SaveDTO saveDTO){
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        ReplyResponse.DTO replyDTO = replyService.댓글쓰기(saveDTO, sessionUser);
+        return ResponseEntity.ok(Resp.ok(replyDTO));
+    }
 
     private final HttpSession session;
     private final ReplyService replyService;

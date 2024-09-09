@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 public class ReplyController {
+    private final HttpSession session;
+    private final ReplyService replyService;
 
     @PostMapping("/api/reply")
     public ResponseEntity<?> save(@RequestBody ReplyRequest.SaveDTO saveDTO){
@@ -19,8 +21,7 @@ public class ReplyController {
         return ResponseEntity.ok(Resp.ok(replyDTO));
     }
 
-    private final HttpSession session;
-    private final ReplyService replyService;
+
 
     @DeleteMapping("/api/reply/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Integer id) {

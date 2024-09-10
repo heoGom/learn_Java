@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.example.springv3.core.error.ex.Exception404;
@@ -19,16 +20,21 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardQueryRepository boardQueryRepository;
 
-    public List<Board> 게시글목록보기(String title) {
-        if(title ==null){
+    public List<BoardResponse.DTO> 게시글목록보기(String title) {
+        List<BoardResponse.DTO> dtos = new ArrayList<>();
+        List<Board> boardList = null;
+        if (title == null) {
             //Pageable pg = PageRequest.of(0, 3, Sort.Direction.DESC, "id");
             Sort sort = Sort.by(Sort.Direction.DESC, "id");
-            List<Board> boardList = boardRepository.findAll(sort);
-            return boardList;
-        }else {
-            List<Board> boardList = boardRepository.mFindAll(title);
-            return boardList;
+            boardList = boardRepository.findAll(sort);
+
+        } else {
+            boardList = boardRepository.mFindAll(title);
         }
+        for (Board board : boardList) {
+            dtos.add(new BoardResponse.DTO(board));
+        }
+        return dtos;
     }
 
 
@@ -44,7 +50,6 @@ public class BoardService {
 
         boardRepository.deleteById(id);
     }
-
 
 
     @Transactional
@@ -74,7 +79,8 @@ public class BoardService {
     public void 게시글수정(int id, BoardRequest.UpdateDTO updateDTO, User sessionUser) {
         // 1. 게시글 조회 (없으면 404)
         Board board = boardRepository.findById(id)
-                .orElseThrow(() -> new Exception404("게시글이 없습니다."));;
+                .orElseThrow(() -> new Exception404("게시글이 없습니다."));
+        ;
 
         // 2. 권한체크
         if (board.getUser().getId() != sessionUser.getId()) {
@@ -86,20 +92,21 @@ public class BoardService {
 
     }
 
-    
-//    public BoardResponse.DetailDTO 게시글상세보기(User sessionUser, Integer boardId){
+
+    //    public BoardResponse.DetailDTO 게시글상세보기(User sessionUser, Integer boardId){
 //        Board boardPS = boardRepository.mFindByIdWithReply(boardId)
 //                .orElseThrow(() -> new Exception404("게시글이 없습니다."));
 //
 //        return new BoardResponse.DetailDTO(boardPS,sessionUser);
 //    }
-    public BoardResponse.DetailDTO 게시글상세보기(User sessionUser, Integer boardId){
+    public BoardResponse.DetailDTO 게시글상세보기(User sessionUser, Integer boardId) {
         Board boardPS = boardRepository.mFindByIdWithReply(boardId)
                 .orElseThrow(() -> new Exception404("게시글이 없습니다."));
 
         return new BoardResponse.DetailDTO(boardPS, sessionUser);
     }
-    public Board 게시글상세보기V3(User sessionUser, Integer boardId){
+
+    public Board 게시글상세보기V3(User sessionUser, Integer boardId) {
         Board boardPS = boardRepository.mFindByIdWithReply(boardId)
                 .orElseThrow(() -> new Exception404("게시글이 없습니다."));
         return boardPS;

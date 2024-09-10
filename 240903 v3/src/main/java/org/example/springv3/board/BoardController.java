@@ -76,12 +76,16 @@ public class BoardController {
         throw new ExceptionApi404("페이지를 찾을 수 없습니다");
     }
 
-
+    @GetMapping("/board")
+    public ResponseEntity<?> boardlist(@RequestParam(name = "title",required = false) String title) {
+        List<BoardResponse.DTO> boardList = boardService.게시글목록보기(title);
+        return ResponseEntity.ok(Resp.ok(boardList));
+    }
 
     @GetMapping("/")
     public String list(@RequestParam(name = "title",required = false) String title, HttpServletRequest request) {
 
-        List<Board> boardList = boardService.게시글목록보기(title);
+        List<BoardResponse.DTO> boardList = boardService.게시글목록보기(title);
         request.setAttribute("models", boardList);
         return "board/list";
     }

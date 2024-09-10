@@ -3,24 +3,57 @@
 <div class="container p-5">
 
     <div class="d-flex justify-content-end mb-2">
-        <form action="/" method="get" class="d-flex col-md-3">
-            <input class="form-control me-2" type="text" placeholder="Search" name="title">
-            <button class="btn btn-primary">Search</button>
+        <form>
+            <input class="form-control me-2" type="text" placeholder="Search" id="title">
         </form>
     </div>
+    <div id="board-box">
+        {{#models}}
 
-    {{#models}}
-
-        <div class="card mb-3">
-            <div class="card-body">
-                <h4 class="card-title mb-3">{{title}}</h4>
-                <a href="/board/{{id}}" class="btn btn-primary">상세보기</a>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">{{title}}</h4>
+                    <a href="/board/{{id}}" class="btn btn-primary">상세보기</a>
+                </div>
             </div>
-        </div>
 
-    {{/models}}
-
+        {{/models}}
+    </div>
 
 </div>
+
+<script>
+    function boardItem(board) {
+        return ` <div class="card mb-3">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">${board.title}</h4>
+                    <a href="/board/${board.id}" class="btn btn-primary">상세보기</a>
+                </div>
+            </div>`;
+    }
+
+    async function getBoardList(title) {
+        let response = await fetch(`/board?title=${title}`);
+        let responseBody = await response.json();
+
+        if (response.ok) {
+            let boardList = responseBody.body;
+            $("#board-box").empty();
+
+            for (board of boardList) {
+                $("#board-box").append(boardItem(board));
+            }
+        } else {
+            alert(responseBody.msg);
+
+        }
+    }
+
+    $("#title").on("keyup", function (e) {
+        let title = e.target.value;
+        console.log(title);
+        getBoardList(title);
+    });
+</script>
 
 {{>layout/footer}}

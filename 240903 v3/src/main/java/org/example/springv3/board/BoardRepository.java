@@ -9,6 +9,9 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
+    @Query("select b from Board b where b.title like %:title% order by b.id desc")
+    List<Board> mFindAll(@Param("title") String title);
+
     @Query("select b from Board b join fetch b.user left join fetch b.replies r left join fetch r.user where b.id =:id")
     Optional<Board> mFindByIdWithReply(@Param("id") int id);
 
@@ -16,7 +19,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     List<Board> mFindAll();
 
 //    @Query(value = "select * from board_tb bt inner join user_tb on bt.user_id = ut.id where bt.id=?", nativeQuery = true)
-    @Query("select b from Board b join fetch b.user u where b.id=:id")
-    Optional<Board> mFindById(int id);
+//    @Query("select b from Board b join fetch b.user u where b.id=:id")
+//    Optional<Board> mFindById(int id);
 }
 

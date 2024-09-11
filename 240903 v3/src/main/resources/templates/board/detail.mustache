@@ -79,7 +79,7 @@
             boardId: $("#boardId").val()
         };
 
-        // 2. fetch 요청하기
+        // 2. fetch 요청하기.
         let response = await fetch(`/api/reply`, {
             method: "post",
             body: JSON.stringify(reply),

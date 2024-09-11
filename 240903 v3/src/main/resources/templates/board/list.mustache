@@ -20,7 +20,18 @@
 
     {{/models}}
 
+    <button onclick="download()">다운로드</button>
+
 
 </div>
+<script>
+    async function download(){
+        let response = await fetch("/?title=제목1");
+        let responseBody = await response.text();
+        console.log(responseBody);
 
+        $("body").html(responseBody);
+    }
+
+</script>
 {{>layout/footer}}

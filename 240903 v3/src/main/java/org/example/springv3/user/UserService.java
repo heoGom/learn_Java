@@ -25,10 +25,19 @@ public class UserService {
     @Transactional
     public void 회원가입(UserRequest.JoinDTO joinDTO) {
 
-        Optional<User> userPs= userRepository.findByUsername(joinDTO.getUsername());
-        if(userPs.isPresent()) {
+        Optional<User> userPs = userRepository.findByUsername(joinDTO.getUsername());
+        if (userPs.isPresent()) {
             throw new Exception400("이미 존재하는 유저입니다.");
         }
         userRepository.save(joinDTO.toEntity());
+    }
+
+    public boolean 유저네임중복되었니(String username) {
+        Optional<User> userOP = userRepository.findByUsername(username);
+        if (userOP.isPresent()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

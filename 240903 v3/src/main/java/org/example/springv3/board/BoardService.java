@@ -3,11 +3,12 @@ package org.example.springv3.board;
 import lombok.RequiredArgsConstructor;
 import org.example.springv3.core.error.ex.Exception403;
 import org.example.springv3.user.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import org.example.springv3.core.error.ex.Exception404;
 
@@ -19,15 +20,16 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final BoardQueryRepository boardQueryRepository;
 
-    public List<Board> 게시글목록보기(String title) {
+    public BoardResponse.PageDTO 게시글목록보기(String title, int page) {
+        Pageable pageable = PageRequest.of(page, 3, Sort.Direction.DESC, "id");
         if(title ==null){
-            //Pageable pg = PageRequest.of(0, 3, Sort.Direction.DESC, "id");
-            Sort sort = Sort.by(Sort.Direction.DESC, "id");
-            List<Board> boardList = boardRepository.findAll(sort);
-            return boardList;
+
+//            Sort sort = Sort.by(Sort.Direction.DESC, "id");
+            Page<Board> boardList = boardRepository.findAll(pageable);
+            return new BoardResponse.PageDTO(boardList);
         }else {
-            List<Board> boardList = boardRepository.mFindAll(title);
-            return boardList;
+            Page<Board> boardList = boardRepository.mFindAll(title, pageable);
+            return new BoardResponse.PageDTO(boardList);
         }
     }
 

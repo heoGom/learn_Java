@@ -10,6 +10,7 @@ import org.example.springv3.core.error.ex.ExceptionApi404;
 import org.example.springv3.core.util.Resp;
 import org.example.springv3.user.User;
 import org.example.springv3.user.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -79,10 +80,12 @@ public class BoardController {
 
 
     @GetMapping("/")
-    public String list(@RequestParam(name = "title",required = false) String title, HttpServletRequest request) {
+    public String list(@RequestParam(name = "title", required = false) String title,
+                       @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
+                       HttpServletRequest request) {
 
-        List<Board> boardList = boardService.게시글목록보기(title);
-        request.setAttribute("models", boardList);
+        BoardResponse.PageDTO pageDTO = boardService.게시글목록보기(title, page);
+        request.setAttribute("model", pageDTO);
         return "board/list";
     }
 

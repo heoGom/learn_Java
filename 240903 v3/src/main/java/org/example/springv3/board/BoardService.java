@@ -26,10 +26,10 @@ public class BoardService {
 
 //            Sort sort = Sort.by(Sort.Direction.DESC, "id");
             Page<Board> boardList = boardRepository.findAll(pageable);
-            return new BoardResponse.PageDTO(boardList);
+            return new BoardResponse.PageDTO(boardList, "");
         }else {
             Page<Board> boardList = boardRepository.mFindAll(title, pageable);
-            return new BoardResponse.PageDTO(boardList);
+            return new BoardResponse.PageDTO(boardList, title);
         }
     }
 

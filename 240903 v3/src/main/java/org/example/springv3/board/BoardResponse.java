@@ -11,36 +11,48 @@ import java.util.List;
 
 public class BoardResponse {
 
+    @Data // getter, setter, toString
+    public static class ListDTO {
+        private Integer id;
+        private String title;
+        private Long count;
+
+        public ListDTO(Integer id, String title, Long count) {
+            this.id = id;
+            this.title = title;
+            this.count = count;
+        }
+    }
+
     @Data
     public static class PageDTO {
-        private Integer number;
-        private Integer totalPage;
-        private Integer size;
+        private Integer number; // 현재페이지
+        private Integer totalPage; // 전체페이지 개수
+        private Integer size; // 한페이지에 아이템 개수
         private Boolean first;
         private Boolean last;
-        private Integer prev;
-        private Integer next;
+        private Integer prev; // 현재페이지 -1
+        private Integer next; // 현재페이지 +1
+        private List<Integer> numbers = new ArrayList<>();
         private List<Content> contents = new ArrayList<>();
+        private String keyword;
 
-        public PageDTO(Page<Board> boardPS) {
-            this.number = boardPS.getNumber();
-            this.totalPage = boardPS.getTotalPages();
-            this.size = boardPS.getSize();
-            this.prev = boardPS.getNumber()-1;
-            this.next = boardPS.getNumber()+1;
-            this.first = true;
-            this.last = true;
-            if(boardPS.getNumber()> boardPS.getTotalPages()){
-                this.prev = boardPS.getTotalPages()-1;
+        public PageDTO(Page<Board> boardPG, String title) {
+            this.keyword = title;
+            this.number = boardPG.getNumber();
+            this.totalPage = boardPG.getTotalPages();
+            this.size = boardPG.getSize();
+            this.first = boardPG.isFirst();
+            this.last = boardPG.isLast();
+            this.prev = boardPG.getNumber()-1;
+            this.next = boardPG.getNumber()+1;
+            int temp = (number / 3)*3; // 0 -> 0, 3 -> 3, 6 -> 6
+
+            for(int i=temp; i<temp+3; i++){ // 0
+                this.numbers.add(i);
             }
-            if (boardPS.hasPrevious()){
-                this.first = false;
-            }
-            if (boardPS.hasNext()){
-                this.last = false;
-            }
-            for(Board board : boardPS){
-                this.contents.add(new Content(board));
+            for (Board board : boardPG.getContent()){
+                contents.add(new Content(board));
             }
         }
 

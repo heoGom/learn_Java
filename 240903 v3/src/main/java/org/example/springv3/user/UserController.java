@@ -18,6 +18,9 @@ public class UserController {
     private final HttpSession session;
     private final UserService userService;
 
+//    @GetMapping("api/user/profile-form")
+//    public String profi
+
     @GetMapping("/user/samecheck")
     public ResponseEntity<?> samecheck(@RequestParam("username") String username) {
         boolean isSameUsername = userService.유저네임중복되었니(username);

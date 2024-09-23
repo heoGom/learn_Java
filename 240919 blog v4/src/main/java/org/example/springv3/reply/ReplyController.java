@@ -23,6 +23,7 @@ public class ReplyController {
     public ResponseEntity<?> save(@RequestBody ReplyRequest.SaveDTO saveDTO){
         User sessionUser = (User) session.getAttribute("sessionUser");
         ReplyResponse.DTO replyDTO = replyService.댓글쓰기(saveDTO, sessionUser);
+        System.out.println("반납");
         return ResponseEntity.ok(Resp.ok(replyDTO));
     }
 

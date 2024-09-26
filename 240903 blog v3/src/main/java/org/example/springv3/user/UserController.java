@@ -22,7 +22,7 @@ public class UserController {
 //    public String profi
 
     @GetMapping("/user/samecheck")
-    public ResponseEntity<?> samecheck(@RequestParam("username") String username) {
+    public ResponseEntity<?> samecheck(@@RequestParam("username") String username) {
         boolean isSameUsername = userService.유저네임중복되었니(username);
         return ResponseEntity.ok(Resp.ok(isSameUsername, isSameUsername ? "중복되었어요" : "중복되지 않았어요"));
 

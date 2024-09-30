@@ -11,7 +11,7 @@ class Sonata with Engine, Wheel {}
 void main() {
   Sonata s = Sonata();
   print(s.power);
-  Engine e = Engine();
+  // Engine e = Engine();
 
-  print(e.power);
+  // print(e.power);
 }

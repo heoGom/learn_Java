@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// 하나의 화면
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -23,9 +24,9 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         actions: [
           Icon(Icons.search),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           Icon(CupertinoIcons.heart, color: Colors.redAccent),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
         ],
       ),
       body: Padding(
@@ -33,18 +34,12 @@ class HomePage extends StatelessWidget {
         child: ListView(
           children: [
             _title(),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _menu(),
-            SizedBox(height: 10),
-            Container(
-              height: 300,
-              color: Colors.red,
-            ),
-            Placeholder(),
-            Container(
-              height: 300,
-              color: Colors.red,
-            ),
+            const SizedBox(height: 10),
+            RecipeItem("burger.jpeg", "burger"),
+            RecipeItem("coffee.jpeg", "coffee"),
+            RecipeItem("pizza.jpeg", "pizza"),
           ],
         ),
       ),
@@ -52,10 +47,12 @@ class HomePage extends StatelessWidget {
   }
 
   Text _title() {
-    return Text("Recipes",
-        style: GoogleFonts.patuaOne(
-          textStyle: TextStyle(fontSize: 30),
-        ));
+    return Text(
+      "Recipes",
+      style: GoogleFonts.patuaOne(
+        textStyle: TextStyle(fontSize: 30),
+      ),
+    );
   }
 
   Row _menu() {
@@ -82,11 +79,57 @@ class HomePage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(mIcon, color: Colors.redAccent, size: 30),
+          Icon(
+            mIcon,
+            color: Colors.redAccent,
+            size: 30,
+          ),
           SizedBox(height: 5),
-          Text("$text",
-              style: TextStyle(
-                  color: Colors.black87, fontWeight: FontWeight.bold)),
+          Text(
+            "$text",
+            style: TextStyle(
+              color: Colors.black87,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RecipeItem extends StatelessWidget {
+  String imageName;
+  String text;
+
+  RecipeItem(this.imageName, this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AspectRatio(
+            aspectRatio: 3 / 2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                "assets/${imageName}",
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          SizedBox(height: 10),
+          Text(
+            "$text",
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            "Have you ever made your own $text? Once you've tried a homemade $text, you'll never go back.",
+            style: TextStyle(color: Colors.grey, fontSize: 12),
+          ),
         ],
       ),
     );

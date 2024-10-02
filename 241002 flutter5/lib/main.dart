@@ -15,7 +15,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ShopPage extends StatelessWidget {
+class ShopPage extends StatefulWidget {
+  @override
+  State<ShopPage> createState() => _ShopPageState();
+}
+
+class _ShopPageState extends State<ShopPage> {
   List<String> imageList = [
     "https://picsum.photos/id/100/200/200",
     "https://picsum.photos/id/101/200/200"
@@ -51,8 +56,9 @@ class ShopPage extends StatelessWidget {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    selectedIndex=0;
+                    selectedIndex = 0;
                     print("selectedIndex : $selectedIndex");
+                    setState(() {});
                   },
                   icon: Icon(Icons.account_circle_sharp),
                 ),
@@ -66,8 +72,9 @@ class ShopPage extends StatelessWidget {
                 ),
                 child: IconButton(
                   onPressed: () {
-                    selectedIndex=1;
+                    selectedIndex = 1;
                     print("selectedIndex : $selectedIndex");
+                    setState(() {});
                   },
                   icon: Icon(Icons.access_alarms_sharp),
                 ),

@@ -4,48 +4,61 @@ import 'package:flutter/material.dart';
 class MyCarrotScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        mAppBar(),
-        const Divider(color: Colors.grey),
-        mCategoryBar(),
-        const Divider(color: Colors.black12, height: 40, thickness: 16),
-        mIconButtons(),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return SafeArea(
+      child: Column(
+        children: [
+          mAppBar(),
+          const Divider(color: Colors.grey),
+          mCategoryBar(),
+          const Divider(color: Colors.black12, height: 40, thickness: 16),
+          mIconButtons(),
+          Expanded(
+            child: mRecommandStores(),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class mRecommandStores extends StatelessWidget {
+  const mRecommandStores({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "이웃들의 추천 가게",
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 15),
+          Expanded(
+            child: ListView(
+              scrollDirection: Axis.horizontal,
               children: [
-                Text(
-                  "이웃들의 추천 가게",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 15),
-                Expanded(
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      mRecommandStore(),
-                      SizedBox(width: 15),
-                      mRecommandStore(),
-                      SizedBox(width: 15),
-                      mRecommandStore(),
-                      SizedBox(width: 15),
-                    ],
-                  ),
-                ),
+                mRecommandStore(),
+                SizedBox(width: 15),
+                mRecommandStore(),
+                SizedBox(width: 15),
+                mRecommandStore(),
+                SizedBox(width: 15),
               ],
             ),
           ),
-        ),
-        SizedBox(
-          height: 8,
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

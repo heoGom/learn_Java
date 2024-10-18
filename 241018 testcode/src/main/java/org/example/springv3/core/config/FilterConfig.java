@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class FilterConfig {
 
     @Bean
-    public FilterRegistrationBean<?> jwtAuthorizationFilter(){
+    public FilterRegistrationBean<?> jwtAuthorizationFilter() {
         FilterRegistrationBean<JwtAuthorizationFilter> bean
                 = new FilterRegistrationBean<>(new JwtAuthorizationFilter());
         bean.addUrlPatterns("/api/*");
@@ -23,7 +23,7 @@ public class FilterConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<?> CorsFilter(){
+    public FilterRegistrationBean<?> CorsFilter() {
         FilterRegistrationBean<CorsFilter> bean
                 = new FilterRegistrationBean<>(new CorsFilter());
         bean.addUrlPatterns("/*");

@@ -21,15 +21,16 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers("/user/**").authenticated()
+                                .requestMatchers("/user/**").authenticated() // 인증만 되면 들어갈수 있는 주소
                                  .requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER") // or 조건 예시
                                  .requestMatchers("/admin/**").hasRole("ADMIN") // and 조건 예시
-                                .anyRequest().permitAll()
+                                .anyRequest().permitAll() // 나머지 . 그냥 가능
                 )
                 .formLogin(form ->
                         form
                                 .loginPage("/loginForm")
-//                                .loginProcessingUrl("/loginProc")
+//                                .usernameParameter("username22") // loginForm의 네임을 바꿀려면 이렇게 바꿀수 있다.
+                                .loginProcessingUrl("/login") // /login 주소가 호출되면 시큐리티가 낚아채서 대신 로그인을 진행해준다.
                                 .defaultSuccessUrl("/")
                 )
                 .logout(logout ->

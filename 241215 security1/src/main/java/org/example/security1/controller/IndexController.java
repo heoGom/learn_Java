@@ -1,6 +1,7 @@
 package org.example.security1.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.security1.user.User;
 import org.example.security1.user.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,11 +44,11 @@ public class IndexController {
     }
     @PostMapping("/join")
     public String join(User user) {
-        System.out.println(user);
         user.setRole("USER");
         String rawPassword = user.getPassword();
         String encPassword = bCryptPasswordEncoder.encode(rawPassword);
         user.setPassword(encPassword);
+
         userRepository.save(user); //이렇게 하면 시큐리티로 로그인 할수 없음. 이유는 패스워드가 암호화가 안되었기 때문
         return "redirect:/loginForm";
     }

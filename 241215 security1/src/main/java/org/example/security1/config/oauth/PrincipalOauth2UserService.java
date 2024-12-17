@@ -11,8 +11,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        // 구글로그인 버튼 클릭 -> 구글로그인창 -> 로그인 완료 -> code를 리턴(OAuth-Client라이브러리) -> AccessToken요청
+        // userRequest정보 -> loadUser함수 호출 -> 구글로부터 회원프로필을 받아준다.
         showAll(userRequest);
 
+        OAuth2User oauth2User = super.loadUser(userRequest);
 
         return super.loadUser(userRequest);
     }
@@ -34,7 +37,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("getClientName = " + userRequest.getClientRegistration().getClientName());
         System.out.println("getClientSecret = " + userRequest.getClientRegistration().getClientSecret());
         System.out.println("getRedirectUri = " + userRequest.getClientRegistration().getRedirectUri());
+
         System.out.println("getAttributes = " + super.loadUser(userRequest).getAttributes());
+
+
 
     }
 }

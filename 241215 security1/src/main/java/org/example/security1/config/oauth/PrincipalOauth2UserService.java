@@ -34,5 +34,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("getClientName = " + userRequest.getClientRegistration().getClientName());
         System.out.println("getClientSecret = " + userRequest.getClientRegistration().getClientSecret());
         System.out.println("getRedirectUri = " + userRequest.getClientRegistration().getRedirectUri());
+        System.out.println("getAttributes = " + super.loadUser(userRequest).getAttributes());
+
     }
 }

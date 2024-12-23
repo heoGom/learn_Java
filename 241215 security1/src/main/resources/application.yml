@@ -6,13 +6,12 @@ server:
       charset: UTF-8
       enabled: true
       force: true
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/security?serverTimezone=Asia/Seoul
-    username: cos
-    password: cos1234
+    url: jdbc:mysql://localhost:3306/security
+    username: ${db.username}
+    password: ${db.password}
 
   jpa:
     hibernate:
@@ -27,8 +26,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 1013827225318-6vvh207vefbelnb24a3jht9ordfo9l25.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${google.client-id}
+            client-secret: ${google.client-secret}
             scope:
               - email
               - profile

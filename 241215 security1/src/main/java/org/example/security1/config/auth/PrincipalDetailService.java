@@ -25,7 +25,7 @@ public class PrincipalDetailService implements UserDetailsService {
         User userEntity = userRepository.findByUsername(username);
         log.info("user: {}", userEntity);
         if (userEntity != null) {
-            return new PrincipalDetails(userEntity);
+//            return new PrincipalDetails(userEntity, oauth2User.getAttributes());
         }
         return null;
     }

@@ -1,7 +1,6 @@
 package org.example.security1.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.example.security1.config.auth.PrincipalDetails;
 import org.example.security1.user.User;
 import org.example.security1.user.UserRepository;

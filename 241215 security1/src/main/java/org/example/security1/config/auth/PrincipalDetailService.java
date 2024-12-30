@@ -22,11 +22,12 @@ public class PrincipalDetailService implements UserDetailsService {
     //시큐리티 Session 내부(Authentication 내부(UserDetails))
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User userEntity = userRepository.findByUsername(username);
-        log.info("user: {}", userEntity);
-        if (userEntity != null) {
-//            return new PrincipalDetails(userEntity, oauth2User.getAttributes());
+        User user = userRepository.findByUsername(username);
+        if(user == null) {
+            return null;
+        }else {
+            return new PrincipalDetails(user);
         }
-        return null;
+
     }
 }

@@ -23,6 +23,7 @@ public class SecurityConfig {
 //                                     .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
 //                                     .requestMatchers("/admin/**").hasAuthority("ADMIN")
 
+
                                         // hasAnyRole("ADMIN") 의 경우 데이터베이스상 "ROLE_ADMIN"으로 되어있어야한다.(
                                         .requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER") // or 조건 예시
                                         .requestMatchers("/admin/**").hasRole("ADMIN") // and 조건 예시

@@ -31,7 +31,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form ->
                                 form
-                                        .loginPage("/login")
+                                        .loginPage("/loginForm")
                 );
 
         return http.build();

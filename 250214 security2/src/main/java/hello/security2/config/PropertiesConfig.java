@@ -5,5 +5,5 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("classpath:config.properties")
-public class PropertiesConfig {gi
+public class PropertiesConfig {
 }

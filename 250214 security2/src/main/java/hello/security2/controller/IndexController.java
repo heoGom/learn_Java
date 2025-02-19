@@ -4,6 +4,8 @@ package hello.security2.controller;
 import hello.security2.user.User;
 import hello.security2.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,5 +62,18 @@ public class IndexController {
 
         userRepository.save(user);//회원가입은 잘됨. 비밀번호 = 1234 =>이렇게 하면 시큐리티로 로그인 할수 없음. 이유는 패스워드가 암호화가 안되었기 때문
         return "redirect:/loginForm";
+    }
+
+    @Secured("ROLE_ADMIN")
+    @GetMapping("/info")
+    public @ResponseBody String info() {
+        return "개인정보";
+    }
+
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_MANAGER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('MANAGER')") //ROLE_ADMIN 이나 ADMIN 둘 다 가능하다.
+    @GetMapping("/data")
+    public @ResponseBody String data() {
+        return "데이터정보";
     }
 }

@@ -2,12 +2,18 @@ package hello.security2.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity // 스프링 시큐리티 필터가 스프링 필터체인에 등록됩니다.
+@EnableMethodSecurity(
+        securedEnabled = true,  // @Secured 활성화, 컨트롤러에서 개별적으로 권한을 설정할 수 있다.
+        prePostEnabled = true  // @PreAuthorize, @PostAuthorize 활성화
+//        jsr250Enabled = true    // @RolesAllowed 활성화 (JSR-250 표준)
+)
 public class SecurityConfig {
 
     @Bean

@@ -1,12 +1,16 @@
 package hello.security2.controller;
 
 
+import hello.security2.auth.PrincipalDetails;
 import hello.security2.user.User;
 import hello.security2.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +22,32 @@ public class IndexController {
 
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
+
+    @GetMapping("/test/login")
+    public @ResponseBody String loginTest(
+            Authentication authentication,
+            @AuthenticationPrincipal PrincipalDetails userDetails) { //의존성 주입
+
+        System.out.println("/test/login =======================");
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("authentication = " + principalDetails.getUser());
+        System.out.println("userDetails = " + userDetails.getUser());
+
+        return "세션정보확인하기";
+    }
+
+    @GetMapping("/test/oauth/login")
+    public @ResponseBody String loginoauthTest(Authentication authentications,
+                                               @AuthenticationPrincipal OAuth2User oAuth2) { //의존성 주입
+
+        System.out.println("/test/login =======================");
+        OAuth2User oAuth2User = (OAuth2User) authentications.getPrincipal();
+
+        System.out.println("authentication = " + oAuth2User.getAttributes());
+        System.out.println("oauth2User = " + oAuth2.getAttributes());
+
+        return "OAuth세션정보확인하기";
+    }
 
 
     @GetMapping({"", "/"})

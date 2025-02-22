@@ -1,6 +1,8 @@
 package hello.security2.config;
 
 import hello.security2.auth.PrincipalDetailsService;
+import hello.security2.oauth.PrincipalOauth2UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -15,7 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
         prePostEnabled = true  // @PreAuthorize, @PostAuthorize 활성화
 //        jsr250Enabled = true    // @RolesAllowed 활성화 (JSR-250 표준)
 )
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final PrincipalOauth2UserService principalOauth2UserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, PrincipalDetailsService principalDetailsService) throws Exception {
@@ -48,6 +52,10 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 ->
                         oauth2
                                 .loginPage("/loginForm") // 구글 로그인이 완료된 뒤의 후처리 필요함
+                                .userInfoEndpoint(userInfoEndpoint ->
+                                        userInfoEndpoint
+                                                .userService(principalOauth2UserService)) // 구글 로그인이 완료된 뒤의 후처리 필요함 Tip. 코드X,(엑세스토큰+사용자프로필정보 O)
+
                 );
 
         return http.build();

@@ -9,19 +9,26 @@ package hello.security2.auth;
 // security Session => Authentication => UserDetails(PrincipalDetails)
 
 import hello.security2.user.User;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
-public class PrincipalDetails implements UserDetails {
+@Getter
+@Setter
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user; //컴포지션
 
     public PrincipalDetails(User user) {
         this.user = user;
     }
+
 
     //해당 유저의 권한을 리턴하는 곳!!
     @Override
@@ -55,5 +62,15 @@ public class PrincipalDetails implements UserDetails {
         // 현재시간 - 로긴시간 => 1년을 초과하면 return false;
 
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return Map.of();
     }
 }

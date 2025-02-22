@@ -1,5 +1,6 @@
 package hello.security2.config;
 
+import hello.security2.auth.PrincipalDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -17,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, PrincipalDetailsService principalDetailsService) throws Exception {
         http.csrf(csrf -> csrf.disable());
 
         http
@@ -40,6 +41,13 @@ public class SecurityConfig {
                                         .loginPage("/loginForm")
                                         .loginProcessingUrl("/login") // /login 주소가 호출ㄷ괴면 시큐리티가 낚아채서 대신 로그인을 진행
                                         .defaultSuccessUrl("/") // 로그인 성공하면 기본값으로 홈화면으로 보냄
+                )
+                // 구글 로그인
+                // 1. 코드받기(인증) 2. 엑세스 토큰(권한) 3. 사용자프로필 정보를 가져오고 4-1. 그 정보를 토대로 회원가입을 자동으로 진행
+                // 4-2. (이메일, 전화번호, 이름, 아이디) 만약 쇼핑몰이라면 -> (집주소), 백화점의 경우 (VIP등급)
+                .oauth2Login(oauth2 ->
+                        oauth2
+                                .loginPage("/loginForm") // 구글 로그인이 완료된 뒤의 후처리 필요함
                 );
 
         return http.build();

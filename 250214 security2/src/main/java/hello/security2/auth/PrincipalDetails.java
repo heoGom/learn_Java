@@ -24,13 +24,23 @@ import java.util.Map;
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user; //컴포지션
+    private Map<String, Object> attributes;
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
 
     public PrincipalDetails(User user) {
         this.user = user;
     }
-
-
     //해당 유저의 권한을 리턴하는 곳!!
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collect = new ArrayList<>();
@@ -65,11 +75,6 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
 
     @Override
     public String getName() {
-        return "";
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return Map.of();
+        return null;
     }
 }

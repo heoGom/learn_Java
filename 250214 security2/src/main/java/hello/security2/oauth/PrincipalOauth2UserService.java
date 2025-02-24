@@ -1,6 +1,8 @@
 package hello.security2.oauth;
 
 import hello.security2.auth.PrincipalDetails;
+import hello.security2.oauth.provider.OAuth2UserInfo;
+import hello.security2.oauth.provider.googleUserInfo;
 import hello.security2.user.User;
 import hello.security2.user.UserRepository;
 import hello.security2.util.BcryptEncoder;
@@ -29,11 +31,17 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        String provider = userRequest.getClientRegistration().getClientId();
-        String providerId = oAuth2User.getAttribute("sub");
+        // 회원가입 강제 진행
+        OAuth2UserInfo oAuth2UserInfo = null;
+        if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
+            System.out.println("구글 로그인 요청");
+            oAuth2UserInfo = new googleUserInfo(oAuth2User.getAttributes());
+        }
+        String provider = oAuth2UserInfo.getProvider();
+        String providerId = oAuth2UserInfo.getProviderId();
         String username = provider + "_" + providerId; // google_sub
         String password = bCryptPasswordEncoder.encode("허곰");
-        String email = oAuth2User.getAttribute("email");
+        String email = oAuth2UserInfo.getEmail();
         String role = "ROLE_USER";
         User userEntity = userRepository.findByUsername(username);
 

@@ -3,6 +3,7 @@ package hello.security2.oauth;
 import hello.security2.auth.PrincipalDetails;
 import hello.security2.oauth.provider.OAuth2UserInfo;
 import hello.security2.oauth.provider.googleUserInfo;
+import hello.security2.oauth.provider.naverUserInfo;
 import hello.security2.user.User;
 import hello.security2.user.UserRepository;
 import hello.security2.util.BcryptEncoder;
@@ -14,6 +15,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -36,6 +39,9 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         if(userRequest.getClientRegistration().getRegistrationId().equals("google")) {
             System.out.println("구글 로그인 요청");
             oAuth2UserInfo = new googleUserInfo(oAuth2User.getAttributes());
+        } else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+            System.out.println("네이버 로그인 요청");
+            oAuth2UserInfo = new naverUserInfo((Map)oAuth2User.getAttributes().get("response"));
         }
         String provider = oAuth2UserInfo.getProvider();
         String providerId = oAuth2UserInfo.getProviderId();

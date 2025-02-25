@@ -43,6 +43,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             System.out.println("네이버 로그인 요청");
             oAuth2UserInfo = new naverUserInfo((Map)oAuth2User.getAttributes().get("response"));
         }
+
         String provider = oAuth2UserInfo.getProvider();
         String providerId = oAuth2UserInfo.getProviderId();
         String username = provider + "_" + providerId; // google_sub
